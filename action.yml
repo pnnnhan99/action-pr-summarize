@@ -1,0 +1,34 @@
+name: 'AI PR Summarizer'
+description: 'Summarize Pull Request changes using AI for non-tech stakeholders'
+branding:
+  icon: 'message-square'
+  color: 'blue'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access'
+    required: true
+    default: ${{ github.token }}
+  openai-api-key:
+    description: 'OpenAI API key for summarization'
+    required: true
+  model:
+    description: 'OpenAI model to use for summarization'
+    required: false
+    default: 'gpt-4o-mini'
+  max-diff-length:
+    description: 'Maximum character length for diff before truncation'
+    required: false
+    default: '50000'
+  ignored-files:
+    description: 'Comma-separated list of file patterns to ignore (e.g., *.lock,*.svg)'
+    required: false
+    default: '*.lock,*.svg,*.csv,*.min.js,*.min.css,package-lock.json,yarn.lock,pnpm-lock.yaml'
+
+outputs:
+  summary:
+    description: 'The generated PR summary'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

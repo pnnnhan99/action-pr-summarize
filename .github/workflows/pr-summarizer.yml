@@ -1,0 +1,27 @@
+name: PR Summarizer
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+      - 'release/**'
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  summarize:
+    name: Summarize PR Changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: AI PR Summarizer
+        uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-4o-mini
+          max-diff-length: '50000'
+          ignored-files: '*.lock,*.svg,*.csv,*.min.js,*.min.css,package-lock.json,yarn.lock,pnpm-lock.yaml'
